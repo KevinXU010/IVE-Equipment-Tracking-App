@@ -54,9 +54,7 @@ function App() {
             >
               Login
             </button>
-            <button className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105">
-              Sign Up
-            </button>
+          
             <button
               onClick={() => setViewItems(true)}
               className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
