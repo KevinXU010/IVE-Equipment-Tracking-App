@@ -8,24 +8,28 @@ function App() {
 
   const items = [
     {
-      name: "VR Headset",
+      name: "PlayStation VR2",
       image: "/VR_Headset.jpg",
-      description: "Virtual reality headset for immersive experience."
+      description: "Virtual reality headset for immersive experience.",
+      category: "VR Headset"
     },
     {
-      name: "Game Controller",
+      name: "PS5 Wireless Controller",
       image: "/Game_Controller.jpg",
-      description: "Wireless controller compatible with various gaming platforms."
+      description: "Wireless controller compatible with various gaming platforms.",
+      category: "Peripheral"
     },
     {
       name: "Binoculars",
       image: "/Binoculars.png",
-      description: "High-quality binoculars suitable for detailed observation."
+      description: "High-quality binoculars suitable for detailed observation.",
+      category: "Outdoor"
     }
   ];
 
   const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
@@ -111,6 +115,7 @@ function App() {
                   <img src={item.image} alt={item.name} className="mx-auto rounded h-40 object-contain" />
                   <h3 className="mt-2 font-semibold">{item.name}</h3>
                   <p className="text-sm text-gray-700">{item.description}</p>
+                  <p className="text-xs text-gray-500 mt-1">Category: {item.category}</p>
                 </div>
               ))}
             </div>
