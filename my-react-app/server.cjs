@@ -7,8 +7,8 @@ app.use(cors());
 app.use(express.json());
 
 const config = {
-    server: 'GAOGANG\\SQLEXPRESS', // Use your server name with double backslashes
-    database: 'IVEproject',
+    server: 'GAOGANG\\SQLEXPRESS', // Use server name with double backslashes
+    database: 'IVEproject', // Database name
     driver: 'msnodesqlv8',
     options: {
         trustedConnection: true,
@@ -32,5 +32,5 @@ app.get('/items', async (req, res) => {
 });
 
 app.listen(3001, () => {
-    console.log('Server running at http://localhost:3001');
+    console.log('Server running at http://localhost:3001'); // Server running message
 });
