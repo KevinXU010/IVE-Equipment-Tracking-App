@@ -32,7 +32,7 @@ function App() {
 
     return (
         <div
-            className="font-['Poppins'] w-screen h-screen bg-cover bg-center bg-no-repeat flex flex-col"
+            className="font-['Poppins'] w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
             style={{ backgroundImage: `url('/Web_Background.jpg')` }}
         >
             <header className="text-white text-center py-4 text-2xl font-bold shadow-md">
