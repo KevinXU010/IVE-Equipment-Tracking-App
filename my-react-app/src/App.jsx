@@ -11,19 +11,22 @@ function App() {
       name: "PlayStation VR2",
       image: "/VR_Headset.jpg",
       description: "Virtual reality headset for immersive experience.",
-      category: "VR Headset"
+      category: "VR Headset",
+      qr: "/qrcodes/Playstation_VR_QR.png"
     },
     {
       name: "PS5 Wireless Controller",
       image: "/Game_Controller.jpg",
       description: "Wireless controller compatible with various gaming platforms.",
-      category: "Peripheral"
+      category: "Peripheral",
+      qr: "/qrcodes/Playstation_controller_QR.png"
     },
     {
       name: "Binoculars",
       image: "/Binoculars.png",
       description: "High-quality binoculars suitable for detailed observation.",
-      category: "Outdoor"
+      category: "Outdoor",
+      qr: "/qrcodes/Binoculars_QR.png"
     }
   ];
 
@@ -113,6 +116,7 @@ function App() {
               {filteredItems.map((item, index) => (
                 <div key={index} className="bg-white bg-opacity-90 shadow-xl rounded-lg p-4 text-center transform hover:scale-105 transition-transform">
                   <img src={item.image} alt={item.name} className="mx-auto rounded h-40 object-contain" />
+                  <img src={item.qr} alt={`${item.name} QR`} width={69} height={69} className="mx-auto mt-2 object-contain"/>
                   <h3 className="mt-2 font-semibold">{item.name}</h3>
                   <p className="text-sm text-gray-700">{item.description}</p>
                   <p className="text-xs text-gray-500 mt-1">Category: {item.category}</p>
