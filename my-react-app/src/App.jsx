@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 
 function App() {
     const [viewItems, setViewItems] = useState(false);
     const [loginPage, setLoginPage] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [items, setItems] = useState([]);
+    const [scanning, setScanning] = useState(false);
 
     useEffect(() => {
-        // Fetch data from the backend (make sure your backend is running on port 3001)
         fetch('http://localhost:3001/items')
             .then(res => res.json())
             .then(data => {
@@ -17,14 +18,32 @@ function App() {
             })
             .catch(err => console.error("Error fetching items:", err));
 
-        // Load Google Fonts (Poppins)
         const link = document.createElement('link');
         link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap';
         link.rel = 'stylesheet';
         document.head.appendChild(link);
     }, []);
 
-    // Filter items based on search term (using name and statement)
+    useEffect(() => {
+        let scanner;
+        if (scanning) {
+            scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+            scanner.render(
+                (decodedText) => {
+                    console.log(`Scan result: ${decodedText}`);
+                    setScanning(false);
+                    window.location.href = decodedText;
+                },
+                (error) => {
+                    console.warn(`Scan error: ${error}`);
+                }
+            );
+        }
+        return () => {
+            if (scanner) scanner.clear().catch(e => console.error("Clear scanner error:", e));
+        };
+    }, [scanning]);
+
     const filteredItems = items.filter(item =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.statement.toLowerCase().includes(searchTerm.toLowerCase())
@@ -41,7 +60,7 @@ function App() {
             </header>
 
             <main className="flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
-                {!viewItems && !loginPage ? (
+                {!viewItems && !loginPage && !scanning ? (
                     <div className="bg-white bg-opacity-80 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
                         <button
                             onClick={() => setLoginPage(true)}
@@ -54,6 +73,12 @@ function App() {
                             className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
                         >
                             View Items
+                        </button>
+                        <button
+                            onClick={() => setScanning(true)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+                        >
+                            Scan QR Code
                         </button>
                     </div>
                 ) : loginPage ? (
@@ -84,6 +109,16 @@ function App() {
                             Back to Home
                         </button>
                     </div>
+                ) : scanning ? (
+                    <div className="flex flex-col items-center mt-6">
+                        <div id="qr-reader"></div>
+                        <button
+                            onClick={() => setScanning(false)}
+                            className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+                        >
+                            Cancel Scan
+                        </button>
+                    </div>
                 ) : (
                     <div className="flex flex-col items-center">
                         <button
@@ -102,7 +137,6 @@ function App() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {filteredItems.map((item, index) => (
                                 <div key={index} className="bg-white bg-opacity-90 shadow-xl rounded-lg p-4 text-center transform hover:scale-105 transition-transform">
-                                    {/* Using item.img because our backend returns img */}
                                     <img src={item.img} alt={item.name} className="mx-auto rounded h-40 object-contain" />
                                     <img src={item.qr} alt={item.name} className="mx-auto rounded h-20 object-contain" />
                                     <h3 className="mt-2 font-semibold">{item.name}</h3>
