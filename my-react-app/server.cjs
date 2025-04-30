@@ -1,19 +1,19 @@
-const express = require('express');
+﻿const express = require('express');
 const sql = require('mssql/msnodesqlv8');
 const cors = require('cors');
-
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
 const config = {
-    server: 'GAOGANG\\SQLEXPRESS', // Use server name with double backslashes
-    database: 'IVEproject', // Database name
-    driver: 'msnodesqlv8',
-    options: {
-        trustedConnection: true,
-        trustServerCertificate: true
-    }
+  server: 'localhost\\SQLEXPRESS',
+  database: 'IVEproject',
+  driver: 'msnodesqlv8',
+  options: {
+    trustedConnection: true,
+    trustServerCertificate: true
+  }
 };
 
 app.get('/items', async (req, res) => {
@@ -31,6 +31,30 @@ app.get('/items', async (req, res) => {
     }
 });
 
-app.listen(3001, () => {
-    console.log('Server running at http://localhost:3001'); // Server running message
+// borrow an item (set Borrowed = 1)
+app.post('/items/:id/borrow', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await sql.connect(config);
+    await sql.query`UPDATE Equipments SET Borrowed = 1 WHERE id = ${id}`;
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Could not borrow item');
+  }
 });
+
+// return an item (set Borrowed = 0)
+app.post('/items/:id/return', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await sql.connect(config);
+    await sql.query`UPDATE Equipments SET Borrowed = 0 WHERE id = ${id}`;
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Could not return item');
+  }
+});
+
+app.listen(3001, () => console.log('Server running at http://localhost:3001'));
