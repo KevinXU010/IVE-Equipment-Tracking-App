@@ -15,14 +15,38 @@ export default function ItemDetail() {
 
     // handler to flip Borrowed → true
     const handleBorrow = async () => {
-        await fetch(`http://localhost:3001/items/${id}/borrow`, { method: 'POST' });
-        setItem(prev => ({ ...prev, Borrowed: 1 }));
+        // confirm before borrowing
+        if (!window.confirm('Are you sure you want to borrow this item?')) {
+            return;
+        }
+
+        try {
+            await fetch(`http://localhost:3001/items/${id}/borrow`, { method: 'POST' });
+            setItem(prev => ({ ...prev, Borrowed: 1 }));
+            // confirmation after success
+            window.alert('Item borrowed successfully!');
+        } catch (e) {
+            console.error(e);
+            window.alert('Failed to borrow. Please try again.');
+        }
     };
 
     // handler to flip Borrowed → false
     const handleReturn = async () => {
-        await fetch(`http://localhost:3001/items/${id}/return`, { method: 'POST' });
-        setItem(prev => ({ ...prev, Borrowed: 0 }));
+        // confirm before returning
+        if (!window.confirm('Are you sure you want to return this item?')) {
+            return;
+        }
+
+        try {
+            await fetch(`http://localhost:3001/items/${id}/return`, { method: 'POST' });
+            setItem(prev => ({ ...prev, Borrowed: 0 }));
+            // confirmation after success
+            window.alert('Item returned successfully!');
+        } catch (e) {
+            console.error(e);
+            window.alert('Failed to return. Please try again.');
+        }
     };
 
     if (!item) {

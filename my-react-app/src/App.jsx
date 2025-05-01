@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'// import Link
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Link } from 'react-router-dom'// import React Link
+import { Html5QrcodeScanner } from 'html5-qrcode'; // import QR code scanner
 import './index.css';
 
 function App() {
+    // state variables
     const [viewItems, setViewItems] = useState(false);
     const [loginPage, setLoginPage] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -11,6 +12,11 @@ function App() {
     const [scanning, setScanning] = useState(false);
     // toggle between 'grid' and 'table'
     const [viewType, setViewType] = useState('grid');
+
+    // state for controlled login form and error handling
+    const [email, setEmail] = useState('');                  // email input
+    const [password, setPassword] = useState('');            // password input
+    const [loginError, setLoginError] = useState('');        // login error message
 
     useEffect(() => {
         
@@ -32,6 +38,8 @@ function App() {
 
     // QR code scanner
     useEffect(() => {
+        // Initialize the scanner only if scanning is true
+        // QR code scanner setup/cleanup
         let scanner;
         if (scanning) {
             scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
@@ -57,16 +65,55 @@ function App() {
         item.statement.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Detailed login handler with status‐based messages
+    const handleLogin = async () => {
+        setLoginError('');
+        try {
+            const res = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const text = await res.text();
+
+            if (!res.ok) {
+                if (text === 'NO_USER') {
+                    setLoginError('No account found for that email.');
+                    window.alert('❌ No account found for that email.');
+                } else if (text === 'BAD_PASSWORD') {
+                    setLoginError('Incorrect password.');
+                    window.alert('❌ Incorrect password.');
+                } else {
+                    setLoginError('Server error – please try again.');
+                    window.alert('❌ Server error – please try again.');
+                }
+                return;
+            }
+
+            // success
+            if (text === 'OK') {
+                window.alert('✅ Login successful!');
+                setLoginPage(false);
+                setViewItems(true);
+            }
+        } catch (err) {
+            setLoginError('Network error – please try again.');
+            window.alert('❌ Network error – please try again.');
+        }
+    };
+
     return (
         <div
             className="font-['Poppins'] w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
             style={{ backgroundImage: `url('/Web_Background.jpg')` }}
         >
+            {/* HEADER */}
             <header className="text-white text-center py-4 text-2xl font-bold shadow-md">
                 <img src="/UniSA-New-Landscape-blue.png" alt="UniSA Logo" className="mx-auto h-12" />
                 <div className="mt-2 text-white">IVE: Equipment Tracking App</div>
             </header>
 
+            {/* HOME CONTROLS */}
             <main className="flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
                 {!viewItems && !loginPage && !scanning ? (
                     <div className="bg-white bg-opacity-80 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
@@ -90,33 +137,37 @@ function App() {
                         </button>
                     </div>
                 ) : loginPage ? (
-                    <div className="bg-white bg-opacity-90 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
-                        <input
-                            type="email"
-                            placeholder="UniSA Email"
-                            className="w-64 p-2 rounded-lg shadow-md border border-gray-300"
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            className="w-64 p-2 rounded-lg shadow-md border border-gray-300"
-                        />
-                        <button
-                            onClick={() => {
-                                setLoginPage(false);
-                                setViewItems(true);
-                            }}
-                            className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
-                        >
-                            Submit
-                        </button>
-                        <button
-                            onClick={() => setLoginPage(false)}
-                            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
-                        >
-                            Back to Home
-                        </button>
-                    </div>
+                        <div className="max-w-sm mx-auto bg-white bg-opacity-90 p-8 rounded-xl shadow-xl">
+                            <h2 className="text-xl mb-4">Please log in</h2>
+                            {loginError && <p className="text-red-600 mb-2">{loginError}</p>}
+                            <input
+                                type="email"
+                                placeholder="UniSA Email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                className="w-full p-2 mb-3 rounded border"
+                            />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                className="w-full p-2 mb-3 rounded border"
+                            />
+                            <button
+                                onClick={handleLogin}
+                                className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg"
+                            >
+                                Submit
+                            </button>
+                            <button
+                                onClick={() => { setLoginPage(false); setLoginError(''); }}
+                                className="mt-4 w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg"
+                            >
+                                Back to Home
+                            </button>
+                        </div>
+                    
                 )  : scanning ? (
                 <div className="flex flex-col items-center mt-6">
                     <div id="qr-reader"></div>
@@ -128,7 +179,7 @@ function App() {
                     </button>
                             </div>
                 ):(
-                            <div className="w-full px-4">
+                     <div className="w-full px-4">
                                 <div className="flex justify-between items-center mb-4">
                                     <button
                                         onClick={() => setViewItems(false)}
@@ -136,7 +187,7 @@ function App() {
                                     >
                                         Back to Home
                                     </button>
-
+                                        {/* ITEMS VIEW */}
                                     {/* Grid/Table toggle buttons with same styling */}
                                     <div className="space-x-2">
                                         <button
