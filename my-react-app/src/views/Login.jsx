@@ -1,0 +1,64 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom' // Import the useNavigate hook from react-router-dom
+import { login } from '@apis/user'
+import { useAuth } from '@hooks/auth'
+
+function Login() {
+  const navigate = useNavigate() // Initialize the navigate function
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const { setToken, setUser } = useAuth()
+
+  const redirect = () => {
+    console.log('redirecting to home page...')
+    window.location.href = '/'
+  }
+
+  const handleLogin = () => {
+    setError('')
+    login(email, password, setToken, setUser, redirect, setError)
+  }
+
+  const errorMsg =
+    error == '' ? '' : <div className="text-red-500">{error}</div>
+
+  return (
+    <>
+      <div className="bg-white bg-opacity-90 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
+        <input
+          type="email"
+          placeholder="UniSA Email"
+          name="email"
+          className="w-64 p-2 rounded-lg shadow-md border border-gray-300"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-64 p-2 rounded-lg shadow-md border border-gray-300"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {errorMsg}
+        <button
+          onClick={handleLogin}
+          className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+        >
+          Submit
+        </button>
+        <button
+          onClick={() => navigate('/')}
+          className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+        >
+          Back to Home
+        </button>
+      </div>
+    </>
+  )
+}
+
+export default Login
