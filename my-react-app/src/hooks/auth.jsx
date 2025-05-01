@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext()
 
@@ -7,11 +7,17 @@ const AuthProvider = ({ children }) => {
   // State to hold the authentication token
   const [token, setToken_] = useState(localStorage.getItem('token'))
   const [user, setUser_] = useState(JSON.parse(localStorage.getItem('user')))
-  const [influxToken, setInfluxToken] = useState('')
-  const [influxOrg, setInfluxOrg] = useState('')
 
   // Function to set the authentication token
   const setToken = (newToken) => {
+    console.log('setToken', newToken)
+
+    if (newToken === null || newToken === undefined) {
+      setToken_(null)
+      setUser_(null)
+      return
+    }
+
     setToken_(newToken)
   }
 
@@ -25,20 +31,6 @@ const AuthProvider = ({ children }) => {
     setUser_(newUser)
     localStorage.setItem('user', JSON.stringify(newUser))
   }
-
-  useEffect(() => {
-    if (influxToken) {
-      console.log('updating token in axios!')
-      axios.defaults.headers.common['InfluxToken'] = influxToken
-    }
-  }, [influxToken])
-
-  useEffect(() => {
-    if (influxOrg) {
-      console.log('updating org in axios!')
-      axios.defaults.headers.common['InfluxOrg'] = influxOrg
-    }
-  }, [influxOrg])
 
   useEffect(() => {
     if (token) {
@@ -59,10 +51,6 @@ const AuthProvider = ({ children }) => {
     setTokenAsync,
     user,
     setUser,
-    influxToken,
-    setInfluxToken,
-    influxOrg,
-    setInfluxOrg,
   }
 
   // Provide the authentication context to the children components

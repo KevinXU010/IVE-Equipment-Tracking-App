@@ -35,7 +35,7 @@ function Dashboard() {
   return (
     <div className="flex flex-col items-center">
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/guest')}
         className="mb-6 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
       >
         Back to Home

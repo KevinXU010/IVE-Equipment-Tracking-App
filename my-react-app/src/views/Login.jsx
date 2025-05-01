@@ -1,18 +1,16 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // Import the useNavigate hook from react-router-dom
 import { login } from '@apis/user'
 import { useAuth } from '@hooks/auth'
 
 function Login() {
-  const navigate = useNavigate() // Initialize the navigate function
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const { setToken, setUser } = useAuth()
 
   const redirect = () => {
-    console.log('redirecting to home page...')
+    console.log('Redirecting to home page...')
+    // Use hard redirect to navigate to the home page
     window.location.href = '/'
   }
 
@@ -22,7 +20,7 @@ function Login() {
   }
 
   const errorMsg =
-    error == '' ? '' : <div className="text-red-500">{error}</div>
+    error === '' ? '' : <div className="text-red-500">{error}</div>
 
   return (
     <>
@@ -51,7 +49,7 @@ function Login() {
           Submit
         </button>
         <button
-          onClick={() => navigate('/')}
+          onClick={() => (window.location.href = '/guest')}
           className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
         >
           Back to Home

@@ -21,7 +21,12 @@ const login = (username, password, setToken, setUser, redirect, setError) => {
   if (username == 'admin' && password == 'admin') {
     flushSync(() => {
       setToken('admin')
-      setUser({ username: 'admin' })
+      setUser({
+        username: 'admin',
+        avatar: null,
+        role: 'admin',
+        name: 'Admin',
+      })
     })
 
     redirect()

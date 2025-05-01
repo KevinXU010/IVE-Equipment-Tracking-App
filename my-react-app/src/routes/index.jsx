@@ -1,7 +1,7 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom'
 import { useAuth } from '../hooks/auth'
-import { ProtectedRoute } from './ProtectedRoute'
-
+import ProtectedRoute from './ProtectedRoute'
+import Layout from '@components/Layout'
 import Dashboard from '@views/Dashboard'
 import Login from '@views/Login'
 import Guest from '@views/Guest'
@@ -9,48 +9,42 @@ import Guest from '@views/Guest'
 const Routes = () => {
   const { token } = useAuth()
 
-  // Define public routes accessible to all users
-  const routesForPublic = [
-    {
-      path: '/guest',
-      element: <Guest />, // Guest component for public routes
-    },
-  ]
-
-  // Define routes accessible only to authenticated users
-  const routesForAuthenticatedOnly = [
+  const router = createBrowserRouter([
     {
       path: '/',
-      element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
+      element: <Layout />,
       children: [
         {
+          // 访问根路径时重定向到 /dashboard
           path: '/',
-          element: <Dashboard />,
+          element: <Navigate to="/dashboard" replace />,
         },
         {
-          path: '/logout',
-          element: <div>Logout</div>,
+          path: '/guest',
+          element: <Guest />,
+        },
+        {
+          path: '/login',
+          element: token ? <Navigate to="/dashboard" replace /> : <Login />,
+        },
+        {
+          path: '/',
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: '/dashboard',
+              element: <Dashboard />,
+            },
+            {
+              path: '/logout',
+              element: <div>Logout</div>,
+            },
+          ],
         },
       ],
     },
-  ]
-
-  // Define routes accessible only to non-authenticated users
-  const routesForNotAuthenticatedOnly = [
-    {
-      path: '/login',
-      element: <Login />,
-    },
-  ]
-
-  // Combine and conditionally include routes based on authentication status
-  const router = createBrowserRouter([
-    ...routesForPublic,
-    ...routesForNotAuthenticatedOnly,
-    ...routesForAuthenticatedOnly,
   ])
 
-  // Provide the router configuration using RouterProvider
   return <RouterProvider router={router} />
 }
 
