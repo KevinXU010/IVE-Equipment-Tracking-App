@@ -5,6 +5,12 @@ import { resolve } from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/login': 'http://localhost:3001',
+      '/items': 'http://localhost:3001'
+    }
+  },
   plugins: [
     alias({
       entries: [

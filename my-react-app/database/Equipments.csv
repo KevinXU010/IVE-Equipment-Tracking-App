@@ -1,0 +1,16 @@
+id	name	Borrowed	statement	description	img	qr
+1	Microsoft HoloLens 2	0	AR Headset	Enterprise-grade mixed reality headset with hand tracking and spatial mapping.	/MicrosoftHololens2.jpg	/sampleQr.jpg
+2	Magic Leap 2	0	AR Headset	Lightweight AR glasses focused on enterprise apps with improved field of view.	/magic_leap2.jpg	/sampleQr.jpg
+3	Meta Quest Pro	0	Mixed Reality	Combines VR and AR with high-res passthrough and full-color visuals.	/MetaQuestPro.jpg	/sampleQr.jpg
+4	Snap AR Spectacles	0	Smart Glasses	Wearable AR glasses by Snap with real-time filters and overlays.	/SnapArSpectacles.png	/sampleQr.jpg
+5	Epson Moverio BT-40S	0	AR Headset	Transparent smart glasses for heads-up display and industrial use.	/EpsonMoverioBT-40S.jpg	/sampleQr.jpg
+6	RealWear Navigator 500	0	Wearable Device	Voice-controlled AR headset for hands-free industrial tasks.	/RealWearNavigator500.jpg	/sampleQr.jpg
+7	Vuzix Blade Upgraded	0	Smart Glasses	Lightweight smart glasses with AR overlays and voice assistant.	/VuzixBladeUpgraded.jpg	/sampleQr.jpg
+8	Lenovo ThinkReality A3	0	AR Headset	Tethered AR glasses that connect to PCs or Motorola phones.	/LenovoThinkRealityA3.jpg	/sampleQr.jpg
+9	Nreal Air	0	Smart Glasses	AR glasses for media viewing and light interactivity via mobile.	/NrealAir.jpg	/sampleQr.jpg
+10	Tilt Five	0	AR Game System	Tabletop AR system using glasses, wand controller, and board surface.	/TiltFive.jpg	/sampleQr.jpg
+13	Meta Quest 3	0	VR Headset	Standalone VR headset with mixed reality capabilities and hand tracking.	/MetaQuest3.jpg	/sampleQr.jpg
+14	Valve Index	0	VR Headset	High-end PC-powered VR headset with precise tracking and finger-tracking controllers.	/ValveIndex.jpg	/sampleQr.jpg
+15	HTC Vive Pro 2	0	VR Headset	High-resolution VR headset with SteamVR tracking for professional use.	/HTCVivePro2.jpg	/sampleQr.jpg
+16	PlayStation VR2	0	VR Headset	Console-based VR headset with eye tracking, haptics, and high fidelity.	/VR_Headset.jpg	/sampleQr.jpg
+17	Pico 4	0	VR Headset	Lightweight standalone headset focused on gam

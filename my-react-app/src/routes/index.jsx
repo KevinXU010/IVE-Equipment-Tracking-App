@@ -5,6 +5,8 @@ import Layout from '@components/Layout'
 import Dashboard from '@views/Dashboard'
 import Login from '@views/Login'
 import Guest from '@views/Guest'
+import Scan from '@views/Scan'
+import ItemDetail from '@views/ItemDetail'
 
 const Routes = () => {
   const { token } = useAuth()
@@ -15,13 +17,16 @@ const Routes = () => {
       element: <Layout />,
       children: [
         {
-          // 访问根路径时重定向到 /dashboard
           path: '/',
           element: <Navigate to="/dashboard" replace />,
         },
         {
           path: '/guest',
           element: <Guest />,
+        },
+        {
+          path: '/scan',
+          element: <Scan />,
         },
         {
           path: '/login',
@@ -38,6 +43,10 @@ const Routes = () => {
             {
               path: '/logout',
               element: <div>Logout</div>,
+            },
+            {
+              path: '/items/:id',
+              element: <ItemDetail />,
             },
           ],
         },

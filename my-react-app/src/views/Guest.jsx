@@ -18,6 +18,12 @@ function Guest() {
         >
           View Items
         </button>
+        <button
+          onClick={() => navigate('/scan')}
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+        >
+          Scan QR Code
+        </button>
       </div>
     </>
   )

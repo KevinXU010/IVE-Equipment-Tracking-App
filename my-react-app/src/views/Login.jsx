@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { login } from '@apis/user'
 import { useAuth } from '@hooks/auth'
 
+/**
+ * /login
+ * @returns
+ */
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
