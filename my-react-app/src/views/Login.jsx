@@ -11,6 +11,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const { setToken, setUser } = useAuth()
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const redirect = () => {
     console.log('Redirecting to home page...')
@@ -29,6 +30,12 @@ function Login() {
   return (
     <>
       <div className="bg-white bg-opacity-90 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
+        {isAdmin ? (
+          <h1 className="text-2xl font-bold">Login as Admin</h1>
+        ) : (
+          <h1 className="text-2xl font-bold">Login</h1>
+        )}
+
         <input
           type="email"
           placeholder="UniSA Email"
@@ -52,6 +59,26 @@ function Login() {
         >
           Submit
         </button>
+
+        {isAdmin ? (
+          <a
+            className="text-sm text-gray-600 hover:underline cursor-pointer"
+            onClick={() => {
+              setIsAdmin(false)
+            }}
+          >
+            Not Admin?
+          </a>
+        ) : (
+          <a
+            className="text-sm text-gray-600 hover:underline cursor-pointer"
+            onClick={() => {
+              setIsAdmin(true)
+            }}
+          >
+            Is Admin?
+          </a>
+        )}
         <button
           onClick={() => (window.location.href = '/guest')}
           className="mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"

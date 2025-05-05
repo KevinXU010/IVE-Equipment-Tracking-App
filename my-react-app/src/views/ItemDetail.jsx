@@ -5,8 +5,7 @@ import { useAuth } from '@hooks/auth'
 export default function ItemDetail() {
   const { id } = useParams()
   const [item, setItem] = useState(null)
-  const { user } = useAuth()
-  console.log({ user })
+  const { user } = useAuth() // Get the user from the auth context
 
   useEffect(() => {
     fetch('/items')
