@@ -1,9 +1,12 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useAuth } from '@hooks/auth'
 
 export default function ItemDetail() {
   const { id } = useParams()
   const [item, setItem] = useState(null)
+  const { user } = useAuth()
+  console.log({ user })
 
   useEffect(() => {
     fetch('/items')
@@ -119,6 +122,14 @@ export default function ItemDetail() {
             className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
           >
             Return
+          </button>
+        )}
+        {user?.admin && (
+          <button
+            // onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+          >
+            Delete
           </button>
         )}
       </div>
