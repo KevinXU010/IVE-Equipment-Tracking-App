@@ -21,6 +21,7 @@ If you are developing a production application, we recommend using TypeScript an
 - Import data from files to database "IVEproject".
   - `database/Equipments.csv`
   - `database/Users.csv`
+    - All the passwords are "123456".
 
 ## 2. Config database connection string.
 - Open `server.cjs`.
@@ -34,3 +35,8 @@ node server.cjs
 ```
 npm run dev
 ```
+
+## 5. Debug page
+
+- URL: `/debug`
+- This page is used to generate crypt password for the Users table.

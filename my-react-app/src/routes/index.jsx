@@ -7,6 +7,7 @@ import Login from '@views/Login'
 import Guest from '@views/Guest'
 import Scan from '@views/Scan'
 import ItemDetail from '@views/ItemDetail'
+import Debug from '@views/Debug'
 
 const Routes = () => {
   const { token } = useAuth()
@@ -27,6 +28,10 @@ const Routes = () => {
         {
           path: '/scan',
           element: <Scan />,
+        },
+        {
+          path: '/debug',
+          element: <Debug />,
         },
         {
           path: '/login',

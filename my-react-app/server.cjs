@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const sql = require('mssql/msnodesqlv8');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
 const app = express();
 
 app.use(cors());
@@ -92,7 +93,8 @@ app.post('/login', async (req, res) => {
           }));
         }
         // transfer to string
-        if (String(user.password) !== String(password)) {
+        const isPasswordValid = await bcrypt.compare(String(password), String(user.password));
+        if (!isPasswordValid) {
             // wrong password
             console.log(user.password, password);
             return res.status(401).send(JSON.stringify({
