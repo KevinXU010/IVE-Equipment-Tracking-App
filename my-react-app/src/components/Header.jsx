@@ -24,6 +24,14 @@ function Header() {
             <div className="text-blue-800">IVE: Equipment Tracking App</div>
           </div>
           <div className="flex items-center gap-4">
+            {user.admin && (
+              <>
+                <span className="bg-white text-blue-800 text-sm p-2 rounded-lg">
+                  Admin
+                </span>
+              </>
+            )}
+
             {/* Display user avatar or default profile Icon */}
             {user.avatar ? (
               <img
