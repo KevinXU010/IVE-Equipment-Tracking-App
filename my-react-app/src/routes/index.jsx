@@ -8,6 +8,7 @@ import Guest from '@views/Guest'
 import Scan from '@views/Scan'
 import ItemDetail from '@views/ItemDetail'
 import Debug from '@views/Debug'
+import AddEquipment from '@views/AddEquipment'
 
 const Routes = () => {
   const { token } = useAuth()
@@ -48,6 +49,10 @@ const Routes = () => {
             {
               path: '/logout',
               element: <div>Logout</div>,
+            },
+            {
+              path: '/items/new',
+              element: <AddEquipment />,
             },
             {
               path: '/items/:id',

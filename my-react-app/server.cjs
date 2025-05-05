@@ -2,6 +2,7 @@
 const sql = require('mssql/msnodesqlv8');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
 const app = express();
 
 app.use(cors());
@@ -19,6 +20,10 @@ const config = {
   }
 };
 
+// Config multer, this module is used to handle file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 app.use(cors());
 app.use(express.json());
 
@@ -35,6 +40,44 @@ app.get('/items', async (req, res) => {
         console.error('SQL error:', err);
         res.status(500).send('Database connection error');
     }
+});
+
+app.post('/items', upload.fields([{ name: 'img' }, { name: 'qr' }]), async (req, res) => {
+  // use req.body get form data
+  const { name, statement, description } = req.body;
+  // use req.files get uploaded files
+  const img = req.files['img'] ? req.files['img'][0] : null;
+  const qr = req.files['qr'] ? req.files['qr'][0] : null;
+
+  // debug info
+  console.log({ name, statement, description, img, qr });
+
+  try {
+    await sql.connect(config);
+
+    // if img or qr is null, use default image
+    const imgPath = img ? `/${img.originalname}` : '/MicrosoftHololens2.jpg';
+    const qrPath = qr ? `/${qr.originalname}` : '/sampleQr.jpg';
+
+    await sql.query`INSERT INTO [dbo].[Equipments]
+           ([name]
+           ,[Borrowed]
+           ,[statement]
+           ,[description]
+           ,[img]
+           ,[qr])
+     VALUES
+           (${name}
+           ,0
+           ,${statement}
+           ,${description}
+           ,${imgPath}
+           ,${qrPath})`;
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to add equipment');
+  }
 });
 
 app.get('/login', async (req, res) => {

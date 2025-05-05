@@ -1,6 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom' // Import the useNavigate hook from react-router-dom
 import React, { useState, useEffect } from 'react'
-
+import { useAuth } from '@hooks/auth'
 /**
  * URL: /dashboard
  * @returns
@@ -9,6 +9,7 @@ function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('')
   const [items, setItems] = useState([])
   const [viewType, setViewType] = useState('grid')
+  const { user } = useAuth() // Use the useAuth hook to get the user object
 
   const navigate = useNavigate() // Initialize the navigate function
 
@@ -74,13 +75,29 @@ function Dashboard() {
             </button>
           </div>
         </div>
-        <input
-          type="text"
-          placeholder="Search items..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-6 w-64 p-2 rounded-lg shadow-md border border-gray-300 text-center"
-        />
+        <div className="flex justify-between items-center mb-6 ">
+          <div className="w-full flex justify-start">
+            {user && (
+              <button
+                onClick={() => navigate('/items/new')}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md"
+              >
+                Add Equipment
+              </button>
+            )}
+            &nbsp;
+          </div>
+          <div className="w-auto items-center justify-center">
+            <input
+              type="text"
+              placeholder="Search items..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-64 p-2 rounded-lg shadow-md border border-gray-300 text-center"
+            />
+          </div>
+          <div className="w-full">&nbsp;</div>
+        </div>
 
         {/* Conditional rendering for grid vs table */}
 
