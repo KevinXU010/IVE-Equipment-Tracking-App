@@ -65,7 +65,7 @@ const login = async (
         setToken(token) // Set the token in the context
         setUser(result.data) // Set the user in the context
       })
-      // redirect()
+      redirect()
     }
   } catch (err) {
     setError('Network error – please try again.')

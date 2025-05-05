@@ -30,7 +30,7 @@ const Routes = () => {
         },
         {
           path: '/login',
-          element: token ? <Navigate to="/dashboard" replace /> : <Login />,
+          element: <Login />,
         },
         {
           path: '/',

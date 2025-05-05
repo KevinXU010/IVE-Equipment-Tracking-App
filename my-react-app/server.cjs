@@ -83,8 +83,8 @@ app.post('/login', async (req, res) => {
       FROM Users
       WHERE Email = ${email}
     `;
+    console.log(result)
         let user = result.recordset[0];
-        user = JSON.parse(JSON.stringify(user));
 
         if (!user) {
             return res.status(404).send(JSON.stringify({

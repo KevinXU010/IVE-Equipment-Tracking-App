@@ -15,7 +15,7 @@ function Login() {
   const redirect = () => {
     console.log('Redirecting to home page...')
     // Use hard redirect to navigate to the home page
-    window.location.href = '/'
+    window.location.href = '/dashboard'
   }
 
   const handleLogin = () => {
