@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 function AddEquipment() {
   const [name, setName] = useState('')
@@ -126,6 +126,12 @@ function AddEquipment() {
           className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
         >
           Add Equipment
+        </button>
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="w-full mt-4 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+        >
+          Back
         </button>
       </form>
     </div>
