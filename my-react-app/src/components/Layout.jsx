@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 function Layout() {
   return (
     <div
-      className="font-['Poppins'] w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
+      className="font-['Poppins'] min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
       style={{ backgroundImage: `url('/Web_Background.jpg')` }}
     >
       <Header />

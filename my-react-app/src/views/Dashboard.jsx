@@ -40,7 +40,7 @@ function Dashboard() {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full px-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center my-4">
           <button
             onClick={() => navigate('/guest')}
             className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md"
@@ -85,7 +85,7 @@ function Dashboard() {
         {/* Conditional rendering for grid vs table */}
 
         {viewType === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="max-full grid grid-cols-1 md:grid-cols-3 gap-6">
             {filteredItems.map((item, index) => (
               <div
                 key={index}
@@ -113,7 +113,7 @@ function Dashboard() {
             ))}
           </div>
         ) : (
-          <table className="w-full bg-white bg-opacity-90 rounded-lg shadow-xl">
+          <table className="max-full bg-white bg-opacity-90 rounded-lg shadow-xl">
             <thead>
               <tr className="border-b">
                 <th className="p-2">ID</th>
@@ -143,13 +143,17 @@ function Dashboard() {
                   </td>
                   <td className="p-2">{item.description}</td>
                   <td className="p-2">{item.statement}</td>
-                  <Link
-                    to={`/items/${filteredItems[filteredItems.length - 1].id}`}
-                  >
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md">
-                      View Details
-                    </button>
-                  </Link>
+                  <td className="p-2">
+                    <Link
+                      to={`/items/${
+                        filteredItems[filteredItems.length - 1].id
+                      }`}
+                    >
+                      <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md">
+                        View Details
+                      </button>
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
