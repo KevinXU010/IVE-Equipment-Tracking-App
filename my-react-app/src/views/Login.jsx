@@ -67,7 +67,7 @@ function Login() {
               setIsAdmin(false)
             }}
           >
-            Not Admin?
+            I'm not Admin
           </a>
         ) : (
           <a
@@ -76,7 +76,7 @@ function Login() {
               setIsAdmin(true)
             }}
           >
-            Is Admin?
+            I'm Admin
           </a>
         )}
         <button
