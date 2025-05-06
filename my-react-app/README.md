@@ -36,7 +36,17 @@ node server.cjs
 npm run dev
 ```
 
-## 5. Debug page
+## 5. Debug page - how to set password ?
 
 - URL: `/debug`
 - This page is used to generate crypt password for the Users table.
+
+![alt text](docs/1.png)
+
+- Click "Generate" button, then you will see the password in the input field.
+
+![alt text](docs/2.png)
+
+- Copy the password and paste it to the Users table in the database.
+
+![alt text](docs/3.png)
