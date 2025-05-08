@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom' // import React Link
 import { Html5QrcodeScanner } from 'html5-qrcode' // import QR code scanner
 import { useAuth } from '@hooks/auth' // import auth context hook
+import Header from '@components/Header'
 import './index.css'
 
 function App() {
@@ -125,15 +126,17 @@ function App() {
       className="font-['Poppins'] w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
       style={{ backgroundImage: `url('/Web_Background.jpg')` }}
     >
-      {/* HEADER */}
-      <header className="text-white text-center py-4 text-2xl font-bold shadow-md">
+      {/* OLD HEADER */}
+      {/* <header className="text-white text-center py-4 text-2xl font-bold shadow-md">
         <img
           src="/UniSA-New-Landscape-blue.png"
           alt="UniSA Logo"
           className="mx-auto h-12"
         />
         <div className="mt-2 text-white">IVE: Equipment Tracking App</div>
-      </header>
+      </header> */}
+      {/* NEW HEADER */}
+      <Header />
 
       {/* HOME CONTROLS */}
       <main className="flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
