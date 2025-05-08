@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom' // import React Link
 import { Html5QrcodeScanner } from 'html5-qrcode' // import QR code scanner
+import { useAuth } from '@hooks/auth' // import auth context hook
 import './index.css'
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
 
   // toggle between normal user and admin login
   const [isAdmin, setIsAdmin] = useState(false)
+
+  // auth context hook to manage user state
+  const { user, setToken, setUser } = useAuth()
 
   useEffect(() => {
     // Fetch data from the backend (make sure your backend is running on port 3001)
@@ -79,7 +83,13 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
-      const text = await res.text()
+      // response format:
+      // { message: 'OK', data: {"id":1,"name":"Alex Pepicelli","email":"alex.pepicelli@unisa.edu.au","username":"alex001","admin":true}}
+      // { message: 'NO_USER'}
+      // { message: 'BAD_PASSWORD'}
+      // { message: 'Server error'}
+      const result = await res.json()
+      const text = result.message
 
       if (!res.ok) {
         if (text === 'NO_USER') {
@@ -97,7 +107,10 @@ function App() {
 
       // success
       if (text === 'OK') {
-        window.alert('✅ Login successful!')
+        // window.alert('✅ Login successful!')
+        const token = 'testtoken' // current token is fake, just for demo purpose
+        setToken(token) // Set the token in the context
+        setUser(result.data) // Set the user in the context
         setLoginPage(false)
         setViewItems(true)
       }
