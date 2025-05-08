@@ -75,7 +75,7 @@ export default function ItemDetail() {
     >
       <Header />
 
-      <main className="w-full flex-1 items-center p-8 space-y-6 text-white">
+      <main className="w-full flex flex-col justify-center items-center p-8 space-y-6 text-white">
         <Link
           to="/"
           className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
