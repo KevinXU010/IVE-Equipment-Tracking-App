@@ -12,6 +12,16 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [items, setItems] = useState([])
   const [scanning, setScanning] = useState(false)
+
+  // add equipment state
+  const [name, setName] = useState('')
+  const [statement, setStatement] = useState('')
+  const [description, setDescription] = useState('')
+  const [img, setImg] = useState(null)
+  const [qr, setQr] = useState(null)
+  const [addEquipment, setAddEquipment] = useState(false)
+  const [addEquipmentError, setAddEquipmentError] = useState('')
+
   // toggle between 'grid' and 'table'
   const [viewType, setViewType] = useState('grid')
 
@@ -26,8 +36,7 @@ function App() {
   // auth context hook to manage user state
   const { user, setToken, setUser } = useAuth()
 
-  useEffect(() => {
-    // Fetch data from the backend (make sure your backend is running on port 3001)
+  const fetchItems = () => {
     fetch('http://localhost:3001/items')
       .then((res) => res.json())
       .then((data) => {
@@ -35,6 +44,11 @@ function App() {
         setItems(data)
       })
       .catch((err) => console.error('Error fetching items:', err))
+  }
+
+  useEffect(() => {
+    // Fetch data from the backend (make sure your backend is running on port 3001)
+    fetchItems()
 
     // Load Google Fonts (Poppins)
     const link = document.createElement('link')
@@ -121,20 +135,45 @@ function App() {
     }
   }
 
+  const handleAddEquipment = async (e) => {
+    e.preventDefault()
+    if (!name) {
+      setAddEquipmentError('Device name cannot be empty.')
+      return
+    }
+    setAddEquipmentError('')
+
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('statement', statement)
+    formData.append('description', description)
+    if (img) formData.append('img', img)
+    if (qr) formData.append('qr', qr)
+
+    try {
+      const response = await fetch('/items', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        fetchItems()
+        setViewItems(true)
+        setAddEquipment(false)
+      } else {
+        setAddEquipmentError('Failed to add equipment. Please try again.')
+      }
+    } catch (err) {
+      console.error('Error adding equipment:', err)
+      setAddEquipmentError('An error occurred. Please try again.')
+    }
+  }
+
   return (
     <div
       className="font-['Poppins'] max-w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
       style={{ backgroundImage: `url('/Web_Background.jpg')` }}
     >
-      {/* OLD HEADER */}
-      {/* <header className="text-white text-center py-4 text-2xl font-bold shadow-md">
-        <img
-          src="/UniSA-New-Landscape-blue.png"
-          alt="UniSA Logo"
-          className="mx-auto h-12"
-        />
-        <div className="mt-2 text-white">IVE: Equipment Tracking App</div>
-      </header> */}
       {/* NEW HEADER */}
       <Header />
 
@@ -228,6 +267,109 @@ function App() {
               Cancel Scan
             </button>
           </div>
+        ) : addEquipment && user?.admin ? (
+          <div className="w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Add Equipment
+            </h2>
+            {addEquipmentError && (
+              <p className="text-red-500 mb-4 text-center">
+                {addEquipmentError}
+              </p>
+            )}
+            <form onSubmit={handleAddEquipment}>
+              <div className="mb-4 flex items-center">
+                <label
+                  htmlFor="name"
+                  className="text-gray-700 font-bold w-1/3 pr-2 text-right"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-2/3 p-2 border border-gray-300 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4 flex items-center">
+                <label
+                  htmlFor="statement"
+                  className="text-gray-700 font-bold w-1/3 pr-2 text-right"
+                >
+                  Device Category
+                </label>
+                <input
+                  type="text"
+                  id="statement"
+                  value={statement}
+                  onChange={(e) => setStatement(e.target.value)}
+                  className="w-2/3 p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div className="mb-4 flex items-start">
+                <label
+                  htmlFor="description"
+                  className="text-gray-700 font-bold w-1/3 pr-2 text-right pt-2"
+                >
+                  Device Description
+                </label>
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows="4"
+                  className="w-2/3 p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div className="mb-4 flex items-center">
+                <label
+                  htmlFor="img"
+                  className="text-gray-700 font-bold w-1/3 pr-2 text-right"
+                >
+                  Device Image
+                </label>
+                <input
+                  type="file"
+                  id="img"
+                  onChange={(e) => setImg(e.target.files[0])}
+                  className="w-2/3 p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div className="mb-6 flex items-center">
+                <label
+                  htmlFor="qr"
+                  className="text-gray-700 font-bold w-1/3 pr-2 text-right"
+                >
+                  QR Code Image
+                </label>
+                <input
+                  type="file"
+                  id="qr"
+                  onChange={(e) => setQr(e.target.files[0])}
+                  className="w-2/3 p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              >
+                Add Equipment
+              </button>
+              <button
+                onClick={() => {
+                  setAddEquipment(false)
+                  setAddEquipmentError('')
+                  setViewItems(false)
+                }}
+                className="w-full mt-4 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+              >
+                Back
+              </button>
+            </form>
+          </div>
         ) : (
           <div className="w-full px-4">
             <div className="flex justify-between items-center mb-4">
@@ -264,13 +406,30 @@ function App() {
                 </button>
               </div>
             </div>
-            <input
-              type="text"
-              placeholder="Search items..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="mb-6 w-64 p-2 rounded-lg shadow-md border border-gray-300 text-center"
-            />
+
+            <div className="flex justify-between items-center mb-6 ">
+              <div className="w-full flex justify-start">
+                {user?.admin && (
+                  <button
+                    onClick={() => setAddEquipment(true)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md"
+                  >
+                    Add Equipment
+                  </button>
+                )}
+                &nbsp;
+              </div>
+              <div className="w-auto items-center justify-center">
+                <input
+                  type="text"
+                  placeholder="Search items..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-64 p-2 rounded-lg shadow-md border border-gray-300 text-center"
+                />
+              </div>
+              <div className="w-full">&nbsp;</div>
+            </div>
 
             {/* Conditional rendering for grid vs table */}
 
