@@ -1,8 +1,14 @@
 import { useAuth } from '@hooks/auth.jsx'
 import { Icon } from '@iconify-icon/react'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
   const { user, setToken, setUser } = useAuth()
+  const navigate = useNavigate()
+  const redirect = () => {
+    console.log('redirecting to home page...')
+    window.location.href = '/'
+  }
   return (
     <header className="text-white text-center py-4 text-2xl font-bold shadow-md flex justify-between items-center px-8">
       {user ? (
@@ -45,6 +51,7 @@ function Header() {
               onClick={() => {
                 setToken(null)
                 setUser(null)
+                redirect()
               }}
               className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg"
             >
