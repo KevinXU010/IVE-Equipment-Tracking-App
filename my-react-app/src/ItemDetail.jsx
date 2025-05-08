@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '@hooks/auth'
+import Header from '@components/Header'
 import './index.css'
 
 export default function ItemDetail() {
@@ -69,19 +70,12 @@ export default function ItemDetail() {
 
   return (
     <div
-      className="font-['Poppins'] w-screen min-h-screen bg-cover bg-fixed bg-no-repeat flex flex-col"
+      className="font-['Poppins'] w-full min-h-screen bg-cover bg-fixed bg-no-repeat flex flex-col"
       style={{ backgroundImage: "url('/Web_Background.jpg')" }}
     >
-      <header className="text-white text-center py-4 text-2xl font-bold shadow-md">
-        <img
-          src="/UniSA-New-Landscape-blue.png"
-          alt="UniSA Logo"
-          className="mx-auto h-12"
-        />
-        <div className="mt-2">IVE: Equipment Tracking App</div>
-      </header>
+      <Header />
 
-      <main className="flex-1 p-8 space-y-6 text-white">
+      <main className="w-full flex-1 items-center p-8 space-y-6 text-white">
         <Link
           to="/"
           className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"

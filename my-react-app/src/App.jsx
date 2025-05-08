@@ -123,7 +123,7 @@ function App() {
 
   return (
     <div
-      className="font-['Poppins'] w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
+      className="font-['Poppins'] max-w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
       style={{ backgroundImage: `url('/Web_Background.jpg')` }}
     >
       {/* OLD HEADER */}
@@ -139,7 +139,7 @@ function App() {
       <Header />
 
       {/* HOME CONTROLS */}
-      <main className="flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
+      <main className="w-full flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
         {!viewItems && !loginPage && !scanning ? (
           <div className="bg-white bg-opacity-80 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
             <button
