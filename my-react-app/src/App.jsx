@@ -178,12 +178,14 @@ function App() {
       <main className="w-full flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
         {!viewItems && !loginPage && !scanning ? (
           <div className="bg-white bg-opacity-80 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
-            <button
-              onClick={() => setLoginPage(true)}
-              className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
-            >
-              Login
-            </button>
+            {!user && (
+              <button
+                onClick={() => setLoginPage(true)}
+                className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+              >
+                Login
+              </button>
+            )}
             <button
               onClick={() => setViewItems(true)}
               className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
