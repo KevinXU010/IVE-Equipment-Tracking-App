@@ -16,9 +16,9 @@ app.use(express.json())
 //   driver: 'msnodesqlv8',
 //   options: {
 //     // trustedConnection: true,
-//     trustServerCertificate: true
-//   }
-// };
+//     trustServerCertificate: true,
+//   },
+// }
 
 const config = {
   server: 'localhost\\SQLEXPRESS',
@@ -174,6 +174,67 @@ app.post('/login', async (req, res) => {
     )
   } catch (err) {
     console.error(err)
+    res.status(500).send(
+      JSON.stringify({
+        message: 'SERVER_ERROR',
+        data: err,
+      })
+    )
+  }
+})
+
+// register
+app.post('/register', async (req, res) => {
+  console.log(req.body.name)
+  const name = req.body.name
+  const email = req.body.email
+  const password = req.body.password
+  if (!name || !email || !password) {
+    return res.status(400).send(
+      JSON.stringify({
+        message: 'Name, email, and password are required.',
+      })
+    )
+  }
+
+  try {
+    await sql.connect(config)
+    // check if mail exists
+    const checkEmailResult = await sql.query`
+      SELECT *
+      FROM Users
+      WHERE Email = ${email}
+    `
+    if (checkEmailResult.recordset.length > 0) {
+      return res.status(409).send(
+        JSON.stringify({
+          message: 'Email already exists.',
+        })
+      )
+    }
+
+    // use bcrypt encrypt password
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
+    // generate username: lowercase name, remove spaces, add random number
+    const username =
+      name.toLowerCase().replace(/\s/g, '') + Math.floor(Math.random() * 10000)
+    const admin = 0 // admin default is 0
+
+    // insert new user into database
+    await sql.query`
+      INSERT INTO [dbo].[Users] ([name], [email], [username], [admin], [password])
+      VALUES (${name}, ${email}, ${username}, ${admin}, ${hashedPassword})
+    `
+
+    res.send(
+      JSON.stringify({
+        message: 'User registered successfully.',
+      })
+    )
+  } catch (err) {
+    console.error('Error registering user:', err)
     res.status(500).send(
       JSON.stringify({
         message: 'SERVER_ERROR',

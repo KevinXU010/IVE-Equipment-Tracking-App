@@ -22,6 +22,7 @@ export default defineConfig({
     proxy: {
       '/login': 'http://localhost:3001',
       '/items': 'http://localhost:3001',
+      '/register': 'http://localhost:3001',
     },
   },
 })

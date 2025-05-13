@@ -4,6 +4,7 @@ import { Html5QrcodeScanner } from 'html5-qrcode' // import QR code scanner
 import { useAuth } from '@hooks/auth' // import auth context hook
 import Header from '@components/Header'
 import './index.css'
+import Register from './Register'
 
 function App() {
   // state variables
@@ -21,6 +22,9 @@ function App() {
   const [qr, setQr] = useState(null)
   const [addEquipment, setAddEquipment] = useState(false)
   const [addEquipmentError, setAddEquipmentError] = useState('')
+
+  // register state
+  const [register, setRegister] = useState(false)
 
   // toggle between 'grid' and 'table'
   const [viewType, setViewType] = useState('grid')
@@ -166,6 +170,11 @@ function App() {
     }
   }
 
+  const backToLogin = () => {
+    setLoginPage(true)
+    setRegister(false)
+  }
+
   return (
     <div
       className="font-['Poppins'] max-w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
@@ -176,7 +185,7 @@ function App() {
 
       {/* HOME CONTROLS */}
       <main className="w-full flex flex-col items-center justify-center flex-1 z-10 text-center gap-6">
-        {!viewItems && !loginPage && !scanning ? (
+        {!viewItems && !loginPage && !scanning && !register ? (
           <div className="bg-white bg-opacity-80 p-8 rounded-xl shadow-xl flex flex-col items-center gap-4">
             {!user && (
               <button
@@ -227,12 +236,25 @@ function App() {
               onClick={() => {
                 setLoginPage(false)
                 setLoginError('')
+                setRegister(true)
+              }}
+              className="mt-4 w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg"
+            >
+              Register
+            </button>
+            <button
+              onClick={() => {
+                setLoginPage(false)
+                setLoginError('')
+                setViewItems(false)
               }}
               className="mt-4 w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg"
             >
               Back to Home
             </button>
           </div>
+        ) : register ? (
+          <Register backToLogin={backToLogin} />
         ) : scanning ? (
           <div className="flex flex-col items-center mt-6">
             <div id="qr-reader"></div>
