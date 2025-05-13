@@ -30,9 +30,6 @@ function App() {
   const [password, setPassword] = useState('') // password input
   const [loginError, setLoginError] = useState('') // login error message
 
-  // toggle between normal user and admin login
-  const [isAdmin, setIsAdmin] = useState(false)
-
   // auth context hook to manage user state
   const { user, setToken, setUser } = useAuth()
 
@@ -202,11 +199,7 @@ function App() {
           </div>
         ) : loginPage ? (
           <div className="max-w-sm mx-auto bg-white bg-opacity-90 p-8 rounded-xl shadow-xl">
-            {isAdmin ? (
-              <h2 className="text-xl mb-4">Admin, please log in</h2>
-            ) : (
-              <h2 className="text-xl mb-4">Please log in</h2>
-            )}
+            <h2 className="text-xl mb-4">Please log in</h2>
             {loginError && <p className="text-red-600 mb-2">{loginError}</p>}
             <input
               type="email"
@@ -228,25 +221,6 @@ function App() {
             >
               Submit
             </button>
-            {isAdmin ? (
-              <a
-                className="text-sm text-gray-600 hover:underline cursor-pointer"
-                onClick={() => {
-                  setIsAdmin(false)
-                }}
-              >
-                I'm not Admin
-              </a>
-            ) : (
-              <a
-                className="text-sm text-gray-600 hover:underline cursor-pointer"
-                onClick={() => {
-                  setIsAdmin(true)
-                }}
-              >
-                I'm Admin
-              </a>
-            )}
             <button
               onClick={() => {
                 setLoginPage(false)
