@@ -10,27 +10,38 @@ export default function ItemDetail() {
 
   const { user } = useAuth() // Get the user from the auth context
 
-  useEffect(() => {
-    fetch('http://localhost:3001/items')
+  const fetchItem = async () => {
+    fetch(`http://localhost:3001/items/${id}`)
       .then((res) => res.json())
       .then((data) => setItem(data.find((i) => String(i.id) === id)))
       .catch(console.error)
+  }
+
+  useEffect(() => {
+    fetchItem()
   }, [id])
 
   // handler to flip Borrowed → true
   const handleBorrow = async () => {
+    // check if the user is logged in
+    if (!user) {
+      window.alert('Please log in to borrow an item.')
+      return
+    }
+
     // confirm before borrowing
     if (!window.confirm('Are you sure you want to borrow this item?')) {
       return
     }
 
     try {
-      await fetch(`http://localhost:3001/items/${id}/borrow`, {
+      await fetch(`http://localhost:3001/items/${id}/borrow/${user.id}`, {
         method: 'POST',
       })
       setItem((prev) => ({ ...prev, Borrowed: 1 }))
       // confirmation after success
       window.alert('Item borrowed successfully!')
+      fetchItem()
     } catch (e) {
       console.error(e)
       window.alert('Failed to borrow. Please try again.')
@@ -158,12 +169,16 @@ export default function ItemDetail() {
             >
               Borrow
             </button>
-          ) : (
+          ) : item.user_id == user?.id ? (
             <button
               onClick={handleReturn}
               className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
             >
               Return
+            </button>
+          ) : (
+            <button className=" bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105">
+              Borrowed
             </button>
           )}
 

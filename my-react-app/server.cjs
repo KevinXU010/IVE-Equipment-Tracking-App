@@ -53,8 +53,41 @@ app.get('/items', async (req, res) => {
   try {
     await sql.connect(config)
     const result = await sql.query(
-      `SELECT *
-       FROM Equipments
+      `SELECT [dbo].[Equipments].[id]
+      ,[name]
+      ,[Borrowed]
+      ,[statement]
+      ,[description]
+      ,[img]
+      ,[qr]
+      ,[user_id]
+FROM [dbo].[Equipments]
+LEFT JOIN [dbo].[BorrowRecords] ON [dbo].[Equipments].[id] = [dbo].[BorrowRecords].[equipment_id]
+       `
+    )
+    res.json(result.recordset)
+  } catch (err) {
+    console.error('SQL error:', err)
+    res.status(500).send('Database connection error')
+  }
+})
+
+app.get('/items/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    await sql.connect(config)
+    const result = await sql.query(
+      `SELECT [dbo].[Equipments].[id]
+      ,[name]
+      ,[Borrowed]
+      ,[statement]
+      ,[description]
+      ,[img]
+      ,[qr]
+      ,[user_id]
+      FROM [dbo].[Equipments]
+      LEFT JOIN [dbo].[BorrowRecords] ON [dbo].[Equipments].[id] = [dbo].[BorrowRecords].[equipment_id]
+      WHERE [dbo].[Equipments].[id] = ${id}
        `
     )
     res.json(result.recordset)
@@ -117,11 +150,24 @@ app.get('/login', async (req, res) => {
   }
 })
 // borrow an item (set Borrowed = 1)
-app.post('/items/:id/borrow', async (req, res) => {
-  const { id } = req.params
+app.post('/items/:id/borrow/:user_id', async (req, res) => {
+  const { id, user_id } = req.params
   try {
     await sql.connect(config)
+
+    // check if the item is already borrowed by user
+    const checkResult = await sql.query`SELECT [id],[equipment_id],[user_id] 
+      FROM [IVEproject].[dbo].[BorrowRecords] 
+      WHERE [equipment_id] = ${id}`
+    if (checkResult.recordset.length > 0) {
+      // already borrowed by user, return error message
+      return res.status(400).send('Item already borrowed by user')
+    }
+
+    // insert borrow record if not exist
+    await sql.query`INSERT INTO [dbo].[BorrowRecords] ([equipment_id] ,[user_id]) VALUES (${id},${user_id})`
     await sql.query`UPDATE Equipments SET Borrowed = 1 WHERE id = ${id}`
+
     res.sendStatus(200)
   } catch (err) {
     console.error(err)
