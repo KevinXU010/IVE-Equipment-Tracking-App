@@ -8,8 +8,20 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+const config = {
+  server: '192.168.3.10',
+  user: 'sa',
+  password: 'Abc_123456',
+  database: 'IVEproject',
+  driver: 'msnodesqlv8',
+  options: {
+    // trustedConnection: true,
+    trustServerCertificate: true,
+  },
+}
+
 // const config = {
-//   server: '192.168.3.10',
+//   server: '127.0.0.1',
 //   user: 'sa',
 //   password: 'Abc_123456',
 //   database: 'IVEproject',
@@ -20,15 +32,15 @@ app.use(express.json())
 //   },
 // }
 
-const config = {
-  server: 'localhost\\SQLEXPRESS',
-  database: 'IVEproject',
-  driver: 'msnodesqlv8',
-  options: {
-    trustedConnection: true,
-    trustServerCertificate: true,
-  },
-}
+// const config = {
+//   server: 'localhost\\SQLEXPRESS',
+//   database: 'IVEproject',
+//   driver: 'msnodesqlv8',
+//   options: {
+//     trustedConnection: true,
+//     trustServerCertificate: true,
+//   },
+// }
 
 // Config multer, this module is used to handle file uploads
 const storage = multer.memoryStorage()
@@ -241,6 +253,24 @@ app.post('/register', async (req, res) => {
         data: err,
       })
     )
+  }
+})
+
+// delete Equipments
+app.delete('/items/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    await sql.connect(config)
+    const result =
+      await sql.query`DELETE FROM [dbo].[Equipments] WHERE [id] = ${id}`
+    if (result.rowsAffected[0] > 0) {
+      res.sendStatus(200)
+    } else {
+      res.status(404).send('Record not found')
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Failed to delete equipment')
   }
 })
 

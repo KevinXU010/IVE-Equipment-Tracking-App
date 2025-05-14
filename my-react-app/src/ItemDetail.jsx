@@ -57,6 +57,40 @@ export default function ItemDetail() {
     }
   }
 
+  /**
+   * Handle the deletion of an item.
+   * Sends a DELETE request to the server to remove the item with the specified ID.
+   * Prompts the user for confirmation before proceeding.
+   * Redirects to the home page if the deletion is successful.
+   */
+  const handleDelete = async () => {
+    // Confirm with the user before deleting the item
+    if (!window.confirm('Are you sure you want to delete this item?')) {
+      return
+    }
+
+    try {
+      // Send a DELETE request to the server
+      const response = await fetch(`http://localhost:3001/items/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        // Show success message and redirect to the home page
+        window.alert('Item deleted successfully!')
+        window.location.href = '/'
+      } else {
+        // Handle errors returned by the server
+        const errorText = await response.text()
+        throw new Error(errorText || 'Failed to delete item')
+      }
+    } catch (e) {
+      // Log the error and show a failure message
+      console.error(e)
+      window.alert('Failed to delete item. Please try again.')
+    }
+  }
+
   if (!item) {
     return (
       <div
@@ -135,7 +169,7 @@ export default function ItemDetail() {
 
           {user?.admin && (
             <button
-              // onClick={handleDelete}
+              onClick={handleDelete}
               className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
             >
               Delete
