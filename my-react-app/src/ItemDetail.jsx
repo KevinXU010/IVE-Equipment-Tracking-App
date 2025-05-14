@@ -56,7 +56,7 @@ export default function ItemDetail() {
     }
 
     try {
-      await fetch(`http://localhost:3001/items/${id}/return`, {
+      await fetch(`http://localhost:3001/items/${id}/return/${user.id}`, {
         method: 'POST',
       })
       setItem((prev) => ({ ...prev, Borrowed: 0 }))
@@ -162,7 +162,7 @@ export default function ItemDetail() {
 
         {/* Borrow / Return buttons */}
         <div className="flex space-x-4">
-          {!item.Borrowed ? (
+          {!item.Borrowed && user ? (
             <button
               onClick={handleBorrow}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
@@ -176,9 +176,16 @@ export default function ItemDetail() {
             >
               Return
             </button>
-          ) : (
+          ) : user ? (
             <button className=" bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105">
               Borrowed
+            </button>
+          ) : (
+            <button
+              onClick={handleBorrow}
+              className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
+            >
+              Login to Borrow
             </button>
           )}
 

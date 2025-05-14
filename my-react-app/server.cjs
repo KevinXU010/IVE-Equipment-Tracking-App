@@ -176,10 +176,23 @@ app.post('/items/:id/borrow/:user_id', async (req, res) => {
 })
 
 // return an item (set Borrowed = 0)
-app.post('/items/:id/return', async (req, res) => {
-  const { id } = req.params
+app.post('/items/:id/return/:user_id', async (req, res) => {
+  const { id, user_id } = req.params
   try {
     await sql.connect(config)
+
+    // check if the item is already borrowed by user
+    const checkResult = await sql.query`SELECT * 
+      FROM [IVEproject].[dbo].[BorrowRecords] 
+      WHERE [equipment_id] = ${id} AND [user_id] = ${user_id}`
+    if (checkResult.recordset.length == 0) {
+      // is not borrowed by user, return error message
+      return res.status(400).send('Item is not borrowed by user')
+    }
+
+    // delete borrow record
+    await sql.query`DELETE FROM [dbo].[BorrowRecords]
+    WHERE [equipment_id] = ${id} AND [user_id] = ${user_id}`
     await sql.query`UPDATE Equipments SET Borrowed = 0 WHERE id = ${id}`
     res.sendStatus(200)
   } catch (err) {
