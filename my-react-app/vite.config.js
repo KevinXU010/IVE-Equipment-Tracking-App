@@ -20,13 +20,9 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-          proxy: {
-              // any request that starts with /api will be sent to port 3001
-              '/api': {
-                  target: 'http://localhost:3001',
-                  changeOrigin: true,
-                  rewrite: (path) => path.replace(/^\/api/, '')
-              }
+      '/login': 'http://localhost:3001',
+      '/items': 'http://localhost:3001',
+      '/register': 'http://localhost:3001',
     },
   },
 })
