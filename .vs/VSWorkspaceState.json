@@ -2,8 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\my-react-app",
-    "\\my-react-app\\src"
+    "\\my-react-app\\database",
+    "\\my-react-app\\src",
+    "\\my-react-app\\src\\assets",
+    "\\my-react-app\\src\\components",
+    "\\my-react-app\\src\\hooks"
   ],
-  "SelectedNode": "\\my-react-app\\vite.config.js",
+  "SelectedNode": "\\my-react-app\\public",
   "PreviewInSolutionExplorer": false
 }

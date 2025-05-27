@@ -180,7 +180,7 @@ function App() {
       className="font-['Poppins'] max-w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
       style={{ backgroundImage: `url('/Web_Background.jpg')` }}
     >
-      {/* NEW HEADER */}
+      {/* HEADER */}
       <Header />
 
       {/* HOME CONTROLS */}
@@ -451,7 +451,7 @@ function App() {
                       Category: {item.statement}
                     </p>
                     {/* per-card View Details link */}
-                    <Link to={`/items/${item.id}`}>
+                    <Link to={`/items/${item._id}`}>
                       <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105">
                         View Details
                       </button>
@@ -466,7 +466,7 @@ function App() {
                     <th className="p-2">ID</th>
                     <th className="p-2">Name</th>
                     <th className="p-2">Image</th>
-                    <th className="p-2">QR Code</th>
+                    {/*<th className="p-2">QR Code</th>*/}
                     <th className="p-2">Description</th>
                     <th className="p-2">Category</th>
                     {/* View Details button in each card */}
@@ -476,7 +476,7 @@ function App() {
                 <tbody>
                   {filteredItems.map((item, idx) => (
                     <tr key={idx} className="border-b even:bg-gray-100">
-                      <td className="p-2">{item.id}</td>
+                      <td className="p-2">{item._id}</td>
                       <td className="p-2">{item.name}</td>
                       <td className="p-2">
                         <img
@@ -485,15 +485,13 @@ function App() {
                           className="h-20 mx-auto"
                         />
                       </td>
-                      <td className="p-2">
-                        <img src={item.qr} alt="QR" className="h-20 mx-auto" />
-                      </td>
+                      {/*<td className="p-2">*/}
+                      {/*  <img src={item.qr} alt="QR" className="h-20 mx-auto" />*/}
+                      {/*</td>*/}
                       <td className="p-2">{item.description}</td>
                       <td className="p-2">{item.statement}</td>
                       <Link
-                        to={`/items/${
-                          filteredItems[filteredItems.length - 1].id
-                        }`}
+                              to={`/items/${item._id}`}
                       >
                         <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md">
                           View Details
