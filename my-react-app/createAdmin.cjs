@@ -32,7 +32,7 @@ async function createAdmin() {
       email,
       username: 'admin001',
       password: hashedPassword,
-      isAdmin: true,
+      admin: true,
     });
 
     console.log('✅ Admin account created successfully');

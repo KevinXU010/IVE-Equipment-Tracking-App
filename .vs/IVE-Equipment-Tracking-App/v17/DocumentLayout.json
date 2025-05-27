@@ -34,24 +34,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "createAdmin.cjs",
-              "DocumentMoniker": "E:\\study\\25SP2\\INFT3042\\IVE\\iveGit\\IVE-Equipment-Tracking-App\\my-react-app\\createAdmin.cjs",
-              "RelativeDocumentMoniker": "my-react-app\\createAdmin.cjs",
-              "ToolTip": "E:\\study\\25SP2\\INFT3042\\IVE\\iveGit\\IVE-Equipment-Tracking-App\\my-react-app\\createAdmin.cjs",
-              "RelativeToolTip": "my-react-app\\createAdmin.cjs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-05-27T09:02:22.851Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -63,8 +50,7 @@
               "RelativeToolTip": "my-react-app\\src\\hooks\\auth.jsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2025-05-27T06:11:15.616Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-27T06:11:15.616Z"
             },
             {
               "$type": "Document",
@@ -76,8 +62,7 @@
               "RelativeToolTip": "my-react-app\\src\\ItemDetail.jsx",
               "ViewState": "AgIAAA4AAAAAAAAAAAAAwD4AAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2025-05-20T11:11:10.596Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-20T11:11:10.596Z"
             },
             {
               "$type": "Document",
@@ -89,8 +74,7 @@
               "RelativeToolTip": "my-react-app\\src\\Register.jsx",
               "ViewState": "AgIAAC8AAAAAAAAAAAAiwAoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2025-05-15T05:04:55.629Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T05:04:55.629Z"
             },
             {
               "$type": "Document",
@@ -100,10 +84,22 @@
               "RelativeDocumentMoniker": "my-react-app\\server.cjs",
               "ToolTip": "E:\\study\\25SP2\\INFT3042\\IVE\\iveGit\\IVE-Equipment-Tracking-App\\my-react-app\\server.cjs",
               "RelativeToolTip": "my-react-app\\server.cjs",
-              "ViewState": "AgIAAA4BAAAAAAAAAAAAACQBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAANcAAAAAAAAAAAA3wOoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-05-14T10:34:19.376Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "createAdmin.cjs",
+              "DocumentMoniker": "E:\\study\\25SP2\\INFT3042\\IVE\\iveGit\\IVE-Equipment-Tracking-App\\my-react-app\\createAdmin.cjs",
+              "RelativeDocumentMoniker": "my-react-app\\createAdmin.cjs",
+              "ToolTip": "E:\\study\\25SP2\\INFT3042\\IVE\\iveGit\\IVE-Equipment-Tracking-App\\my-react-app\\createAdmin.cjs",
+              "RelativeToolTip": "my-react-app\\createAdmin.cjs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-05-27T09:02:22.851Z"
             },
             {
               "$type": "Document",
@@ -115,8 +111,7 @@
               "RelativeToolTip": "my-react-app\\src\\App.jsx",
               "ViewState": "AgIAAL0BAAAAAAAAAAA3wJQBAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2025-05-08T05:44:24.901Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-08T05:44:24.901Z"
             }
           ]
         }

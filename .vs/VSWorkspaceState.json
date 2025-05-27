@@ -2,12 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\my-react-app",
-    "\\my-react-app\\database",
-    "\\my-react-app\\public",
-    "\\my-react-app\\src\\assets",
-    "\\my-react-app\\src\\components",
-    "\\my-react-app\\src\\hooks"
+    "\\my-react-app\\database"
   ],
-  "SelectedNode": "\\my-react-app\\uploads",
   "PreviewInSolutionExplorer": false
 }
