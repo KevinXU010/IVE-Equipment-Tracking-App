@@ -5,28 +5,27 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const { MongoClient } = require('mongodb');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
 app.use(express.json()); // parse JSON bodies
 
+// ─── Serve your public folder at the root ─────────────────────────────────────
+app.use(express.static(path.join(__dirname, 'public'))); 
 
-//  Static file serving for uploaded images (img & qr)
-
-const UPLOAD_DIR = path.join(__dirname, 'uploads');
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-app.use('/uploads', express.static(UPLOAD_DIR));
-
-//  Multer setup for handling multipart/form-data (file uploads)
-
+// ─── Multer storage: dynamically choose folder by fieldname ────────────────
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+    destination: (req, file, cb) => {
+        // if this is the QR field, drop in public/qrcodes, otherwise public/images
+        const subFolder = file.fieldname === 'qr' ? 'qrcodes' : 'images';
+        const uploadPath = path.join(__dirname, 'public', subFolder);
+        cb(null, uploadPath);
+    },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
-        const name = `${file.fieldname}-${Date.now()}${ext}`;
-        cb(null, name);
+        cb(null, Date.now() + ext);
     }
 });
 const upload = multer({ storage });
@@ -174,9 +173,10 @@ async function startServer() {
 
 
     //  POST /items       — add new equipment
-    //     multipart/form-data: name, statement, description, img, qr
+    //  multipart/form-data: name, statement, description, img, qr
     app.post(
         '/items',
+        // accept two different file‐fields: "img" and "qr"
         upload.fields([
             { name: 'img', maxCount: 1 },
             { name: 'qr', maxCount: 1 }
@@ -194,42 +194,74 @@ async function startServer() {
                     .toArray();
                 const nextId = last.length ? last[0]._id + 1 : 1;
 
+                // build your document, pulling the correct URL paths for each file
                 const newItem = {
                     _id: nextId,
                     name,
+                    borrowed: false,
                     statement: statement || '',
                     description: description || '',
-                    borrowed: false,
-                    user_id: null,
-                    img: req.files.img?.[0]
-                        ? `/uploads/${req.files.img[0].filename}`
+                    
+                    // img file was saved in public/images → serve at /images/<filename>
+                    img: req.files.img
+                        ? `/images/${req.files.img[0].filename}`
                         : null,
-                    qr: req.files.qr?.[0]
-                        ? `/uploads/${req.files.qr[0].filename}`
+                    // qr file was saved in public/qrcodes → serve at /qrcodes/<filename>
+                    qr: req.files.qr
+                        ? `/qrcodes/${req.files.qr[0].filename}`
                         : null
                 };
 
                 await itemsCol.insertOne(newItem);
-                res.status(201).json(newItem);
+                return res.status(201).json(newItem);
             } catch (err) {
                 console.error('Add equipment error:', err);
-                res.status(500).send('SERVER_ERROR');
+                return res.status(500).send('SERVER_ERROR');
             }
         }
     );
 
 
-    //  7) DELETE /items/:id  — remove equipment
-
+    // DELETE /items/:id — delete equipment + its image and qr files
     app.delete('/items/:id', async (req, res) => {
         const id = parseInt(req.params.id, 10);
         if (isNaN(id)) return res.status(400).send('Invalid ID');
 
         try {
-            const result = await itemsCol.deleteOne({ _id: id });
-            if (result.deletedCount === 0) {
+            // Fetch the document so we know what files to remove
+            const item = await itemsCol.findOne({ _id: id });
+            if (!item) {
                 return res.status(404).send('Record not found');
             }
+
+            // Attempt to delete the image file
+            if (item.img) {
+                // item.img is like "/images/1612345678901.png"
+                const imgPath = path.join(__dirname, 'public', item.img);
+                fs.unlink(imgPath, err => {
+                    if (err && err.code !== 'ENOENT') {
+                        console.warn(`Failed to delete image file ${imgPath}:`, err);
+                    }
+                });
+            }
+
+            // Attempt to delete the QR code file
+            if (item.qr) {
+                // item.qr is like "/qrcodes/1612345678902.png"
+                const qrPath = path.join(__dirname, 'public', item.qr);
+                fs.unlink(qrPath, err => {
+                    if (err && err.code !== 'ENOENT') {
+                        console.warn(`Failed to delete QR file ${qrPath}:`, err);
+                    }
+                });
+            }
+
+            // Finally remove the document from MongoDB
+            const result = await itemsCol.deleteOne({ _id: id });
+            if (result.deletedCount === 0) {
+                return res.status(500).send('Failed to delete record');
+            }
+
             res.sendStatus(200);
         } catch (err) {
             console.error('Delete equipment error:', err);
@@ -238,7 +270,7 @@ async function startServer() {
     });
 
 
-    //  8) /items/:id/borrow/:userId
+    //  /items/:id/borrow/:userId
     //     — record borrow and mark borrowed=true
 
     // server.cjs
