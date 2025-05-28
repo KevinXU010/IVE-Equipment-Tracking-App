@@ -15,11 +15,11 @@ function Header() {
         <>
           <div className="flex flex-row items-center justify-center bg-white rounded-xl p-4">
             <img
-              src="/UniSA-New-Landscape-blue.png"
+              src="/images/UniSA-New-Landscape-blue.png"
               alt="UniSA Logo"
               className="mx-auto h-12"
             />
-            <div className="text-blue-800">IVE: Equipment Tracking App</div>
+            <div className="text-2xl font-bold text-[#003366] ml-4">IVE: Equipment Tracking App</div>
           </div>
           <div className="flex items-center gap-4">
             {user.admin && (
@@ -45,7 +45,7 @@ function Header() {
                 className="rounded-full"
               />
             )}
-            <span className="text-white text-lg">{user.name}</span>
+            <span className="text-lg font-semibold text-[#003366]">{user.name}</span>
             {/* Logout button */}
             <button
               onClick={() => {
@@ -62,11 +62,11 @@ function Header() {
       ) : (
         <div className="w-full">
           <img
-            src="/UniSA-New-Landscape-blue.png"
+            src="/images/UniSA-New-Landscape-blue.png"
             alt="UniSA Logo"
             className="mx-auto h-12"
           />
-          <div className="text-white">IVE: Equipment Tracking App</div>
+          <div className="text-2xl font-bold text-[#003366] ml-4">IVE: Equipment Tracking App</div>
         </div>
       )}
     </header>

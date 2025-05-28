@@ -177,8 +177,7 @@ function App() {
 
   return (
     <div
-      className="font-['Poppins'] max-w-screen min-h-screen bg-cover bg-no-repeat flex flex-col bg-fixed"
-      style={{ backgroundImage: `url('/Web_Background.jpg')` }}
+      className="min-h-screen bg-[#cbd5e1] flex flex-col"
     >
       {/* HEADER */}
       <Header />
@@ -445,7 +444,7 @@ function App() {
                       className="mx-auto rounded h-40 object-contain"
                     />
                     {/*<img src={item.qr} alt={item.name} className="mx-auto rounded h-20 object-contain" />*/}
-                    <h3 className="mt-2 font-semibold">{item.name}</h3>
+                    <h3 className="mt-2 font-semibold text-gray-900">{item.name}</h3>
                     <p className="text-sm text-gray-700">{item.description}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       Category: {item.statement}
@@ -460,7 +459,7 @@ function App() {
                 ))}
               </div>
             ) : (
-              <table className="w-full bg-white bg-opacity-90 rounded-lg shadow-xl">
+              <table className="w-full bg-white bg-opacity-90 rounded-lg shadow-xl text-gray-900">
                 <thead>
                   <tr className="border-b">
                     <th className="p-2">ID</th>
@@ -506,7 +505,7 @@ function App() {
         )}
       </main>
 
-      <footer className="text-center py-4 text-white">
+      <footer className="text-center py-4 text-[#003366]">
         © UniSA - IVE Project
       </footer>
     </div>

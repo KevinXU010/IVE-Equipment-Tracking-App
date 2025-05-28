@@ -94,8 +94,8 @@ export default function ItemDetail() {
     if (!item) {
         return (
             <div
-                className="font-['Poppins'] w-screen min-h-screen bg-cover bg-fixed bg-no-repeat flex items-center justify-center"
-                style={{ backgroundImage: "url('/Web_Background.jpg')" }}
+                className="min-h-screen bg-[#cbd5e1] flex flex-col"
+                
             >
                 <span className="text-white text-xl">Loading…</span>
             </div>
@@ -104,12 +104,12 @@ export default function ItemDetail() {
 
     return (
         <div
-            className="font-['Poppins'] w-full min-h-screen bg-cover bg-fixed bg-no-repeat flex flex-col"
-            style={{ backgroundImage: "url('/Web_Background.jpg')" }}
+            className="min-h-screen bg-[#cbd5e1] flex flex-col"
+            
         >
             <Header />
 
-            <main className="w-full flex flex-col justify-center items-center p-8 space-y-6 text-white">
+            <main className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-xl flex flex-col justify-center items-center p-8 space-y-6">
                 <Link
                     to="/"
                     className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
@@ -117,7 +117,7 @@ export default function ItemDetail() {
                     Back
                 </Link>
 
-                <h1 className="text-4xl font-bold">{item.name}</h1>
+                <h1 className="text-4xl font-bold text-[#003366]">{item.name}</h1>
 
                 <div className="flex flex-wrap gap-8">
                     <img
@@ -134,7 +134,7 @@ export default function ItemDetail() {
                     )}
                 </div>
 
-                <div className="space-y-2 text-gray-100">
+                <div className="text-black font-['Poppins'] w-full">
                     <p><strong>ID:</strong> {item._id}</p>
                     <p><strong>Category:</strong> {item.category}</p>
                     <p><strong>Description:</strong> {item.description}</p>
