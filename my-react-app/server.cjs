@@ -289,7 +289,11 @@ async function startServer() {
             if (matchedCount === 0) {
                 return res.status(404).json({ message: 'Item not found' })
             }
-
+            await borrowCol.insertOne({
+                item_id: id,
+                user_id: userId,
+                timestamp: new Date()
+            });
             // fetch the updated doc and return it
             const updated = await itemsCol.findOne({ _id: id })
             res.json(updated)
@@ -313,7 +317,10 @@ async function startServer() {
             if (matchedCount === 0) {
                 return res.status(400).json({ message: 'Item is not borrowed by this user' })
             }
-
+            await borrowCol.deleteOne({
+                item_id: id,
+                user_id: userId             //  removes that record from borrowRecords
+            });
             const updated = await itemsCol.findOne({ _id: id })
             res.json(updated)
         } catch (err) {
