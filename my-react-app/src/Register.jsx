@@ -9,9 +9,10 @@ function Register({ backToLogin }) {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-
+  // Handler when the form is submitted
   const handleRegister = async (e) => {
-    e.preventDefault()
+    e.preventDefault()  // Prevent full page reload
+    // Validate that no field is empty
     if (!name || !email || !password || !confirmPassword) {
       setError('Name, email, password, and confirm password cannot be empty.')
       return
@@ -21,8 +22,9 @@ function Register({ backToLogin }) {
       setError('Passwords do not match.')
       return
     }
-    setError('')
 
+    setError('') // Clear any previous errors
+    // Prepare the data to send to the server
     const data = {
       name,
       email,
@@ -30,6 +32,7 @@ function Register({ backToLogin }) {
     }
 
     try {
+      // Send a POST request to the server to register the user
       const response = await fetch('http://localhost:3001/register', {
         method: 'POST',
         headers: {
@@ -37,8 +40,9 @@ function Register({ backToLogin }) {
         },
         body: JSON.stringify(data),
       })
-
+      // Check if the response is OK
       if (response.ok) {
+        // If registration is successful, redirect to login
         backToLogin()
       } else {
         setError('Failed to register. Please try again.')
@@ -52,6 +56,7 @@ function Register({ backToLogin }) {
   return (
     <div className="w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+      {/* Display any error message */}
       {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
       <form onSubmit={handleRegister}>
         <div className="mb-4 flex items-center">

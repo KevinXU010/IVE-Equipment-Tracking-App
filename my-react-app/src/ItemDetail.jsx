@@ -6,8 +6,8 @@ import Header from '@components/Header'
 import './index.css'
 
 export default function ItemDetail() {
-    const { id } = useParams()
-    const [item, setItem] = useState(null)
+    const { id } = useParams() // Grab the equipment ID from the URL
+    const [item, setItem] = useState(null)  // Local state for the fetched equipment
     const { user } = useAuth()
 
     // fetch single item
@@ -16,12 +16,12 @@ export default function ItemDetail() {
             const res = await fetch(`http://localhost:3001/items/${id}`)
             if (!res.ok) throw new Error(`HTTP ${res.status}`)
             const data = await res.json()
-            setItem(data)
+            setItem(data)   // Populate local state
         } catch (e) {
             console.error("Failed to load item:", e)
         }
     }
-
+    // On component mount or when `id` changes, reload the item
     useEffect(() => {
         fetchItem()
     }, [id])
@@ -61,7 +61,7 @@ export default function ItemDetail() {
             )
             if (!res.ok) throw new Error(`HTTP ${res.status}`)
             const updated = await res.json()             
-            setItem(updated)                              
+            setItem(updated)    // Immediately update UI                              
             window.alert('Item returned successfully!')
         } catch (e) {
             console.error(e)
@@ -80,7 +80,7 @@ export default function ItemDetail() {
             })
             if (response.ok) {
                 window.alert('Item deleted successfully!')
-                window.location.href = '/'
+                window.location.href = '/'  // Redirect home
             } else {
                 const errorText = await response.text()
                 throw new Error(errorText || 'Failed to delete item')
@@ -90,7 +90,7 @@ export default function ItemDetail() {
             window.alert('Failed to delete item. Please try again.')
         }
     }
-
+    // Show a loading state while fetching
     if (!item) {
         return (
             <div
@@ -110,15 +110,16 @@ export default function ItemDetail() {
             <Header />
 
             <main className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-xl flex flex-col justify-center items-center p-8 space-y-6">
+                {/* Back button */}
                 <Link
                     to="/"
                     className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg shadow-md transform transition-transform hover:scale-105"
                 >
                     Back
                 </Link>
-
+                {/* Item title */}
                 <h1 className="text-4xl font-bold text-[#003366]">{item.name}</h1>
-
+                {/* Images: equipment photo + QR code */}
                 <div className="flex flex-wrap gap-8">
                     <img
                         src={item.img}
@@ -133,14 +134,14 @@ export default function ItemDetail() {
                         />
                     )}
                 </div>
-
+                {/* Item details */}
                 <div className="text-black font-['Poppins'] w-full">
                     <p><strong>ID:</strong> {item._id}</p>
                     <p><strong>Category:</strong> {item.category}</p>
                     <p><strong>Description:</strong> {item.description}</p>
                     <p><strong>Borrowed:</strong> {item.borrowed ? 'Yes' : 'No'}</p>
                 </div>
-
+                {/* Action buttons */}
                 <div className="flex space-x-4">
                     {!item.borrowed && user ? (
                         <button
@@ -168,7 +169,7 @@ export default function ItemDetail() {
                             Login to Borrow
                         </button>
                     )}
-
+                    {/* Delete button only for admins */}
                     {user?.admin && (
                         <button
                             onClick={handleDelete}

@@ -14,24 +14,25 @@ If you are developing a production application, we recommend using TypeScript an
 
 # How to run this project?
 
-## 1. Import database data to MSSQL server.
-- Open SQL Server Management Studio (SSMS).
-- Connect to your SQL Server instance.
-- Create database named "IVEproject".
-- Import data from files to database "IVEproject".
-  - Just execute the SQL language directly in SSMS.
-  - `database/IVEproject.sql`
-  - All the passwords are "123456".
+## 1. Import database data to MongoDB Database.
 
 ## 2. Config database connection string.
 - Open `server.cjs`.
-- Change `server` config to your server name, set username and password.
+- Change `server` config to your server name
 
 ## 3. Start backend server
 ```
 node server.cjs
 ```
-## 4. Start frontend server.
+## 4. Start frontend server.(Vite)
 ```
 npm run dev
+```
+## 5. Enter 'o' in terminal to open the browser.
+```
+o
+```
+## If want to Create Admin Account
+```
+node createAdmin.cjs
 ```

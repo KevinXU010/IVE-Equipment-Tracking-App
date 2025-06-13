@@ -18,6 +18,7 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* Define a keyframe animation to spin an element from 0¡ã to 360¡ã */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -27,6 +28,8 @@
   }
 }
 
+/* Apply the spinning animation to the second link¡¯s logo,
+   but only if the user hasn¡¯t requested reduced motion */
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
@@ -38,5 +41,5 @@
 }
 
 .read-the-docs {
-  color: #888;
+    color: #888; /* Light gray color to deemphasize secondary text */
 }
